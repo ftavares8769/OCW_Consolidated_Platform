@@ -74,7 +74,7 @@ _NOTES_SYSTEM = (
     "/no_think\n"
     "Extract key terms and definitions from this lecture.\n"
     "Output a JSON array of strings ONLY.\n"
-    'Each string format: "Term \u2014 definition (12 words or fewer)"\n'
+    'Each string format: "Term \u2014 definition" (keep definitions concise, 12 words or fewer)\n'
     "Rules:\n"
     "- Max 10 entries, most important first.\n"
     "- Extract ONLY core technical concepts a student needs for an exam.\n"
