@@ -30,6 +30,10 @@ DEFAULTS: dict = {
     # ── Flashcards ─────────────────────────────────────────────
     "daily_new_limit":  20,
 
+    # ── Goals ──────────────────────────────────────────────────
+    "goal_daily_cards":     20,   # cards reviewed per day target
+    "goal_weekly_lectures":  3,   # lectures processed per week target
+
     # ── AI Tutor (separate model from content generation) ──────
     # Empty string means "inherit from ai_provider / *_model above"
     "tutor_ai_provider":      "",    # "" | "local" | "openai" | "anthropic"

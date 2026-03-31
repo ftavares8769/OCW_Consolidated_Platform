@@ -10,6 +10,8 @@ A self-hosted AI learning platform that turns MIT OpenCourseWare lectures into a
 
 | Feature | Details |
 |---|---|
+| **Home dashboard** | Daily goal rings, streak counter, 13-week activity heatmap, and per-course completion tracker |
+| **Goal setting** | Set daily card and weekly lecture targets; confetti celebration fires when a goal is hit |
 | **Library** | Import any MIT OCW course by URL or YouTube playlist |
 | **AI Notes** | Auto-generated summaries and key-term definitions from lecture transcripts |
 | **Quiz** | Mixed question types: multiple-choice, fill-in-the-blank, and open-ended (LLM-graded) |
@@ -129,10 +131,12 @@ learnOCW/
 │   │   ├── tutor.py          # Streaming AI tutor chat
 │   │   ├── flashcards.py     # SRS deck & review session
 │   │   ├── mistakes.py       # Wrong-answer tracking & review
+│   │   ├── quiz.py           # Open-ended answer grading
+│   │   ├── stats.py          # Dashboard stats, heatmap, goals
 │   │   └── settings.py       # AI provider config
 │   └── services/
 │       ├── ai_client.py      # Ollama / OpenAI / Anthropic abstraction
-│       ├── config.py         # Settings persistence
+│       ├── config.py         # Settings persistence (incl. daily/weekly goals)
 │       ├── summarizer.py     # AI content generation (notes, quiz, problems)
 │       ├── scraper.py        # OCW resource scraper
 │       ├── downloader.py     # Auto-download course files
@@ -143,17 +147,20 @@ learnOCW/
 │   └── src/
 │       ├── App.jsx           # Router & sidebar navigation
 │       ├── pages/
+│       │   ├── HomePage.jsx      # Dashboard: goals, heatmap, course completion
 │       │   ├── CoursesPage.jsx   # Library + Discover
 │       │   ├── LecturePage.jsx   # Video, notes, study, files
 │       │   ├── FlashcardsPage.jsx
 │       │   ├── ReviewPage.jsx    # Mistake review tab
 │       │   └── SettingsPage.jsx
 │       └── components/
-│           ├── TutorPanel.jsx    # Streaming AI chat
-│           ├── LatexText.jsx     # KaTeX math renderer
-│           ├── study/            # Quiz, ProblemSet components
-│           ├── tabs/             # Notes, Study, Files tab content
-│           └── flashcards/       # DeckBrowser, StudySession, Summary
+│           ├── ActivityHeatmap.jsx  # GitHub-style 13-week review heatmap
+│           ├── Confetti.jsx         # Goal-celebration particle animation
+│           ├── TutorPanel.jsx       # Streaming AI chat
+│           ├── LatexText.jsx        # KaTeX math renderer
+│           ├── study/               # Quiz, ProblemSet components
+│           ├── tabs/                # Notes, Study, Files tab content
+│           └── flashcards/          # DeckBrowser, StudySession, Summary
 │
 ├── data/                     # ← git-ignored (created at runtime)
 │   ├── learnOCW.db           # SQLite database
@@ -222,6 +229,10 @@ Key endpoints:
 | `GET` | `/api/mistakes` | All pending mistakes grouped by lecture |
 | `POST` | `/api/mistakes/{id}/explain` | AI explanation for a mistake |
 | `POST` | `/api/mistakes/{id}/practice` | Generate targeted practice questions |
+| `POST` | `/api/quiz/grade-open-ended` | LLM grades an open-ended answer (0–5 score) |
+| `GET` | `/api/stats/overview` | Dashboard data: heatmap, streak, goals, course completion |
+| `GET` | `/api/stats/goals` | Current daily/weekly goals |
+| `PUT` | `/api/stats/goals` | Update daily/weekly goals |
 
 ---
 

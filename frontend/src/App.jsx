@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { BookOpen, Library, Compass, Layers, Settings, RotateCcw } from 'lucide-react'
+import { BookOpen, Home, Library, Compass, Layers, Settings, RotateCcw } from 'lucide-react'
+import HomePage from './pages/HomePage.jsx'
 import { LibraryPage } from './pages/CoursesPage.jsx'
 import DiscoverPage from './pages/CoursesPage.jsx'
 import LecturePage from './pages/LecturePage.jsx'
@@ -34,6 +35,10 @@ export default function App() {
           </div>
           <div className="sidebar-nav">
             <NavLink to="/" end className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+              <Home size={18} />
+              <span>Home</span>
+            </NavLink>
+            <NavLink to="/library" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
               <Library size={18} />
               <span>Library</span>
             </NavLink>
@@ -63,12 +68,13 @@ export default function App() {
         </nav>
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<LibraryPage />} />
-            <Route path="/discover" element={<DiscoverPage />} />
+            <Route path="/"           element={<HomePage />} />
+            <Route path="/library"    element={<LibraryPage />} />
+            <Route path="/discover"   element={<DiscoverPage />} />
             <Route path="/lecture/:lectureId" element={<LecturePage />} />
             <Route path="/flashcards" element={<FlashcardsPage />} />
-            <Route path="/review" element={<ReviewPage />} />
-            <Route path="/settings" element={<SettingsPage />} />
+            <Route path="/review"     element={<ReviewPage />} />
+            <Route path="/settings"   element={<SettingsPage />} />
           </Routes>
         </main>
       </div>

@@ -8,6 +8,40 @@
   background: var(--bg-primary);
 }
 
+/* ── Left panel (heatmap + deck browser) ─────────────────────── */
+.flashcards-left {
+  display: flex;
+  flex-direction: column;
+  width: 300px;
+  flex-shrink: 0;
+  overflow: hidden;
+  border-right: 1px solid var(--border);
+}
+
+/* ── Compact heatmap strip ───────────────────────────────────── */
+.fc-heatmap-panel {
+  padding: 12px 14px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-secondary);
+  overflow-x: auto;
+}
+
+.fc-heatmap-stats {
+  display: flex;
+  gap: 14px;
+  margin-bottom: 8px;
+}
+
+.fc-stat {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.fc-stat strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
 /* ── Right panel (session / empty state) ─────────────────────── */
 .flashcards-right {
   flex: 1;
@@ -16,7 +50,6 @@
   flex-direction: column;
   overflow: hidden;
   background: var(--bg-primary);
-  border-left: 1px solid var(--border);
 }
 
 /* ── Empty state ─────────────────────────────────────────────── */

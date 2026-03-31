@@ -4,8 +4,9 @@
 
 /* ── Deck Browser ────────────────────────────────────────────── */
 .deck-browser {
-  width: 300px;
-  flex-shrink: 0;
+  /* Width controlled by .flashcards-left parent; fill remaining height */
+  flex: 1;
+  min-height: 0;
   display: flex;
   flex-direction: column;
   background: var(--bg-secondary);
