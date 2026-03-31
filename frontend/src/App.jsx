@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route, NavLink } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { BookOpen, Home, Library, Compass, Layers, Settings, RotateCcw } from 'lucide-react'
+import { BookOpen, Home, Library, Compass, Layers, Settings, RotateCcw, FlaskConical } from 'lucide-react'
 import HomePage from './pages/HomePage.jsx'
 import { LibraryPage } from './pages/CoursesPage.jsx'
 import DiscoverPage from './pages/CoursesPage.jsx'
@@ -8,6 +8,7 @@ import LecturePage from './pages/LecturePage.jsx'
 import FlashcardsPage from './pages/FlashcardsPage.jsx'
 import ReviewPage from './pages/ReviewPage.jsx'
 import SettingsPage from './pages/SettingsPage.jsx'
+import PromptLabPage from './pages/PromptLabPage.jsx'
 import './App.css'
 
 export default function App() {
@@ -59,6 +60,10 @@ export default function App() {
             </NavLink>
           </div>
           <div className="sidebar-footer">
+            <NavLink to="/lab" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
+              <FlaskConical size={16} />
+              <span>Prompt Lab</span>
+            </NavLink>
             <NavLink to="/settings" className={({ isActive }) => `nav-item ${isActive ? 'active' : ''}`}>
               <Settings size={16} />
               <span>Settings</span>
@@ -75,6 +80,7 @@ export default function App() {
             <Route path="/flashcards" element={<FlashcardsPage />} />
             <Route path="/review"     element={<ReviewPage />} />
             <Route path="/settings"   element={<SettingsPage />} />
+            <Route path="/lab"        element={<PromptLabPage />} />
           </Routes>
         </main>
       </div>

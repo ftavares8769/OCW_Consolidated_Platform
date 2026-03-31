@@ -105,6 +105,7 @@ from routes.settings import router as settings_router
 from routes.mistakes import router as mistakes_router
 from routes.quiz import router as quiz_router
 from routes.stats import router as stats_router
+from routes.lab import router as lab_router
 
 app.include_router(courses_router)
 app.include_router(lectures_router)
@@ -114,6 +115,7 @@ app.include_router(settings_router)
 app.include_router(mistakes_router)
 app.include_router(quiz_router)
 app.include_router(stats_router)
+app.include_router(lab_router)
 
 
 @app.get("/api/health")

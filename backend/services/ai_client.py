@@ -67,6 +67,30 @@ def stream(
         yield from _stream_ollama(prompt, system, temperature, max_tokens, s, think=False)
 
 
+def call_explicit(
+    prompt: str,
+    system: str = "",
+    provider: str = "local",
+    model: str = "",
+    temperature: float = 0.2,
+    max_tokens: int = 3000,
+) -> str:
+    """
+    Call AI with an explicit provider + model, bypassing the global config model.
+    API keys are still read from settings. Used by the Prompt Lab.
+    """
+    s = cfg.load()
+    if provider == "openai":
+        s_ov = {**s, "openai_model": model or s.get("openai_model", "gpt-4o-mini")}
+        return _call_openai(prompt, _strip_no_think(system), temperature, max_tokens, s_ov)
+    if provider == "anthropic":
+        s_ov = {**s, "anthropic_model": model or s.get("anthropic_model", "claude-3-haiku-20240307")}
+        return _call_anthropic(prompt, _strip_no_think(system), temperature, max_tokens, s_ov)
+    # local / ollama
+    s_ov = {**s, "local_model": model or s.get("local_model", "qwen3:1.7b")}
+    return _call_ollama(prompt, system, temperature, False, max_tokens, s_ov)
+
+
 def check_available() -> bool:
     """Return True if the configured AI provider is reachable / has a key."""
     s = cfg.load()
