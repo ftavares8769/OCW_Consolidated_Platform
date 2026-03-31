@@ -35,16 +35,18 @@ _SUMMARY_SYSTEM = (
 
 _QUIZ_SYSTEM = (
     "/no_think\n"
-    "Create 5 high-quality multiple-choice quiz questions from this lecture.\n"
+    "Create 5 multiple-choice quiz questions from this lecture.\n"
     "Output a JSON array ONLY. Each element:\n"
     '{"question":"...","options":["A","B","C","D"],"correct_index":0}\n'
     "Rules:\n"
-    "- Write clear, specific questions. Use LaTeX math notation where appropriate (e.g. $f\'(x)$, $\\\\int$).\n"
+    "- Questions must be concise: 1-2 sentences maximum. Do NOT write long multi-sentence scenarios.\n"
+    "- Use LaTeX math notation where appropriate (e.g. $f\'(x)$, $\\\\int$).\n"
     "- 4 answer choices each; correct_index is 0-3.\n"
     "- Cover the 5 most important testable concepts from the lecture.\n"
     "- Wrong options must be mathematically/conceptually plausible, not obviously absurd.\n"
     "- Use ONLY content from the lecture.\n"
     "- Do NOT write questions about the professor, institution, or the video itself.\n"
+    "- You MUST output all 5 questions. Do not stop early.\n"
     "Output compact JSON (no extra spaces or newlines). No explanation, no markdown fences."
 )
 
@@ -61,13 +63,14 @@ _PROBLEMS_SYSTEM = (
     "4. PROBLEM: ...\n"
     "   SOLUTION: ...\n\n"
     "Rules:\n"
+    "- Problem statements must be concise: 2-3 sentences maximum. State the scenario and question clearly without padding.\n"
     "- One distinct concept per problem.\n"
     "- Use LaTeX for all math expressions (wrap in $...$).\n"
     "- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' | '.\n"
     "- Simple problems may need only 2-3 steps; complex derivations may need 5-6.\n"
     "- Each step should be a clear, complete instruction or calculation.\n"
     "- Use ONLY content from the lecture.\n"
-    "- Write all 4 problems before stopping."
+    "- You MUST write all 4 problems. Do not stop after 1 or 2."
 )
 
 _NOTES_SYSTEM = (
@@ -219,7 +222,7 @@ def _gen_quiz(text: str) -> list:
             prompt=f"Lecture notes:\n\n{text}\n\nOutput the JSON quiz array.",
             system=_build_system(_QUIZ_SYSTEM, "prompt_quiz_extra"),
             temperature=0.15,
-            max_tokens=1600,
+            max_tokens=2800,
         )
         return _parse_list(raw)
     except Exception as e:
@@ -234,7 +237,7 @@ def _gen_problems(text: str) -> list:
             prompt=f"Lecture notes:\n\n{text}\n\nWrite the 4 numbered practice problems now.",
             system=_build_system(_PROBLEMS_SYSTEM, "prompt_problems_extra"),
             temperature=0.15,
-            max_tokens=1600,
+            max_tokens=2800,
         )
         problems = _parse_problems_text(raw)
         if problems:
