@@ -1,0 +1,491 @@
+/* ═══════════════════════════════════════════════════════════════
+   Settings Page
+═══════════════════════════════════════════════════════════════ */
+.settings-page {
+  height: 100%;
+  overflow-y: auto;
+  background: var(--bg-primary);
+  padding: 32px 0;
+}
+
+.settings-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 32px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── Page header ─────────────────────────────────────────────── */
+.settings-title {
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0 0 4px;
+}
+
+.settings-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  margin: 0;
+}
+
+/* ── Section card ────────────────────────────────────────────── */
+.settings-section {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.settings-section-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.settings-section-icon {
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.settings-section-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.settings-section-desc {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-left: auto;
+}
+
+.settings-section-body {
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ── Field ───────────────────────────────────────────────────── */
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.settings-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.settings-recommended {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 1px 6px;
+  border-radius: 10px;
+  background: rgba(108, 142, 245, 0.15);
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.settings-hint {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ── Provider toggle (segmented control) ─────────────────────── */
+.provider-toggle {
+  display: flex;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 3px;
+  gap: 2px;
+  width: fit-content;
+}
+
+.provider-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 16px;
+  border-radius: calc(var(--radius-sm) - 2px);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.provider-btn:hover:not(.active) {
+  background: var(--bg-hover);
+  color: var(--text-secondary);
+}
+
+.provider-btn.active {
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-weight: 600;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.25);
+}
+
+/* ── Select / Input ──────────────────────────────────────────── */
+.settings-select,
+.settings-input {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  padding: 8px 12px;
+  outline: none;
+  transition: border-color 0.15s;
+  width: 100%;
+}
+
+.settings-select:focus,
+.settings-input:focus {
+  border-color: var(--accent);
+}
+
+.settings-select option {
+  background: var(--bg-secondary);
+}
+
+/* ── API key row ─────────────────────────────────────────────── */
+.api-key-row {
+  display: flex;
+  gap: 8px;
+  align-items: stretch;
+}
+
+.api-key-row .settings-input {
+  flex: 1;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.05em;
+}
+
+.btn-toggle-key {
+  flex-shrink: 0;
+  padding: 0 12px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 12px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.btn-toggle-key:hover {
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+
+.key-set-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--success);
+  background: rgba(76, 175, 140, 0.12);
+  padding: 2px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(76, 175, 140, 0.3);
+}
+
+.key-clear-btn {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 11px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding: 0;
+}
+.key-clear-btn:hover { color: var(--error); }
+
+/* ── Context window options ──────────────────────────────────── */
+.context-options {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.context-option {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  text-align: left;
+}
+
+.context-option:hover {
+  border-color: var(--accent);
+  background: var(--bg-hover);
+}
+
+.context-option.selected {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+}
+
+.context-option-tokens {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.context-option.selected .context-option-tokens {
+  color: var(--accent);
+}
+
+.context-option-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  line-height: 1.3;
+}
+
+.context-custom-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.context-custom-row label {
+  font-size: 12px;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+
+.context-custom-row .settings-input {
+  width: 120px;
+  flex: none;
+}
+
+/* ── Number input (spinbox) ──────────────────────────────────── */
+.settings-number-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.settings-number {
+  width: 90px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  font-family: inherit;
+  padding: 8px 12px;
+  outline: none;
+  text-align: center;
+}
+.settings-number:focus { border-color: var(--accent); }
+
+.settings-number-hint {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+/* ── Installed models list ───────────────────────────────────── */
+.model-option {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 2px 0;
+}
+
+.model-size {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+
+/* ── Save bar ────────────────────────────────────────────────── */
+.settings-save-bar {
+  position: sticky;
+  bottom: 0;
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border);
+  padding: 14px 32px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 -32px -64px;
+}
+
+.btn-save-settings {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 24px;
+  border-radius: var(--radius-sm);
+  background: var(--accent);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.btn-save-settings:hover:not(:disabled) { opacity: 0.88; }
+.btn-save-settings:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.save-status {
+  font-size: 13px;
+}
+.save-status.success { color: var(--success); }
+.save-status.error   { color: var(--error); }
+
+/* ── Placeholder sections (Library / Discover) ───────────────── */
+.settings-placeholder {
+  padding: 24px 20px;
+  font-size: 13px;
+  color: var(--text-muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ── Divider ─────────────────────────────────────────────────── */
+.settings-divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 4px 0;
+}
+
+/* ── AI Tutor: source row ────────────────────────────────────── */
+.tutor-source-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.tutor-inherit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-muted);
+  font-size: 12.5px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.tutor-inherit-btn:hover {
+  border-color: var(--accent);
+  color: var(--text-secondary);
+  background: var(--bg-hover);
+}
+
+.tutor-inherit-btn.active {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.tutor-effective-label {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-family: 'Courier New', monospace;
+  background: var(--bg-hover);
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+/* ── Generation Prompts ──────────────────────────────────────── */
+.settings-prompt-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  font-family: 'Courier New', monospace;
+  line-height: 1.5;
+  padding: 10px 12px;
+  resize: vertical;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.settings-prompt-textarea:focus {
+  border-color: var(--accent);
+}
+.settings-prompt-textarea::placeholder {
+  color: var(--text-muted);
+  font-style: italic;
+  font-family: inherit;
+}
+
+.settings-prompt-default {
+  margin: 8px 0 0;
+  padding: 10px 12px;
+  background: var(--bg-hover);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  word-break: break-word;
+  line-height: 1.5;
+}
+
+.prompt-view-btn,
+.prompt-reset-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 3px 9px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.prompt-view-btn:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}
+.prompt-reset-btn {
+  border-color: var(--error, #e05);
+  color: var(--error, #e05);
+}
+.prompt-reset-btn:hover {
+  background: color-mix(in srgb, var(--error, #e05) 10%, transparent);
+}

@@ -1,0 +1,43 @@
+# ── Runtime data (never commit) ───────────────────────────────────────────────
+/data/                       # SQLite DB, course index cache, downloaded resources
+/backend/data/               # settings.json (contains API keys entered by the user)
+
+# ── Local dev environment ──────────────────────────────────────────────────────
+/.claude/                    # Claude Code workspace settings & launch configs
+/venv/                       # Python virtual environment
+/frontend/node_modules/      # Node.js dependencies
+
+# ── Build output ──────────────────────────────────────────────────────────────
+/frontend/dist/
+/frontend/.vite/
+
+# ── Python artefacts ──────────────────────────────────────────────────────────
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+.eggs/
+dist/
+build/
+*.so
+
+# ── Environment & secrets ─────────────────────────────────────────────────────
+.env
+.env.local
+.env.*.local
+*.env
+
+# ── OS / editor noise ─────────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# ── Logs ──────────────────────────────────────────────────────────────────────
+*.log
+/logs/
