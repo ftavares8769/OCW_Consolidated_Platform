@@ -63,7 +63,7 @@ _PROBLEMS_SYSTEM = (
     "4. PROBLEM: ...\n"
     "   SOLUTION: ...\n\n"
     "Rules:\n"
-    "- Problem statements must be concise: 2-3 sentences maximum. State the scenario and question clearly without padding.\n"
+    "- Problem statements should be concise: typically 2-3 sentences. A problem may exceed this only when the scenario genuinely requires it — not to add padding.\n"
     "- One distinct concept per problem.\n"
     "- Use LaTeX for all math expressions (wrap in $...$).\n"
     "- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' | '.\n"
