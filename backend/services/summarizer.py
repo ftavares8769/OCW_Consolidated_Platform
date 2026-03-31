@@ -1,5 +1,6 @@
 import json
 import logging
+import random
 import re
 from services.transcript import chunk_transcript
 from services import ai_client
@@ -35,19 +36,26 @@ _SUMMARY_SYSTEM = (
 
 _QUIZ_SYSTEM = (
     "/no_think\n"
-    "Create 5 multiple-choice quiz questions from this lecture.\n"
-    "Output a JSON array ONLY. Each element:\n"
-    '{"question":"...","options":["A","B","C","D"],"correct_index":0}\n'
+    "Create exactly 5 quiz questions from this lecture using a mix of types: "
+    "3 multiple-choice, 1 fill-in-the-blank, and 1 open-ended.\n"
+    "Output a JSON array ONLY. Each element must include a 'type' field.\n\n"
+    "Multiple-choice (type='mcq'):\n"
+    '{"type":"mcq","question":"...","options":["A","B","C","D"],"correct_index":0}\n\n'
+    "Fill-in-the-blank (type='fill_blank'):\n"
+    '{"type":"fill_blank","question":"The ___ rule states that $\\\\frac{d}{dx}[f(g(x))] = ...$","blank_answer":"chain","hint":"think about composite functions"}\n\n'
+    "Open-ended (type='open_ended'):\n"
+    '{"type":"open_ended","question":"Explain why...","sample_answer":"Key points: A. B. C."}\n\n'
     "Rules:\n"
     "- Questions must be concise: 1-2 sentences maximum. Do NOT write long multi-sentence scenarios.\n"
     "- Use LaTeX math notation where appropriate (e.g. $f\'(x)$, $\\\\int$).\n"
-    "- 4 answer choices each; correct_index is 0-3.\n"
-    "- Cover the 5 most important testable concepts from the lecture.\n"
-    "- Wrong options must be mathematically/conceptually plausible, not obviously absurd.\n"
+    "- MCQ: 4 answer choices, correct_index is 0-3; wrong options must be plausible.\n"
+    "- Fill-blank: use exactly ___ (three underscores) as the blank marker; blank_answer is the missing word or short phrase; hint is optional.\n"
+    "- Open-ended: choose a conceptual or explanatory question; sample_answer lists 2-3 key points a student should cover.\n"
+    "- Cover 5 distinct, important testable concepts from the lecture.\n"
     "- Use ONLY content from the lecture.\n"
     "- Do NOT write questions about the professor, institution, or the video itself.\n"
     "- You MUST output all 5 questions. Do not stop early.\n"
-    "Output compact JSON (no extra spaces or newlines). No explanation, no markdown fences."
+    "Output compact JSON array (no extra spaces or newlines). No explanation, no markdown fences."
 )
 
 _PROBLEMS_SYSTEM = (
@@ -55,7 +63,7 @@ _PROBLEMS_SYSTEM = (
     "Write exactly 4 numbered practice problems from this lecture. One problem per major concept.\n"
     "Use this EXACT format for each — no deviations:\n\n"
     "1. PROBLEM: [problem statement — use LaTeX math notation where appropriate, e.g. $f(x) = x^2$]\n"
-    "   SOLUTION: [step 1] | [step 2] | [step 3]\n"
+    "   SOLUTION: [step 1] ||| [step 2] ||| [step 3]\n"
     "2. PROBLEM: ...\n"
     "   SOLUTION: ...\n"
     "3. PROBLEM: ...\n"
@@ -66,7 +74,8 @@ _PROBLEMS_SYSTEM = (
     "- Problem statements should be concise: typically 2-3 sentences. A problem may exceed this only when the scenario genuinely requires it — not to add padding.\n"
     "- One distinct concept per problem.\n"
     "- Use LaTeX for all math expressions (wrap in $...$).\n"
-    "- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' | '.\n"
+    "- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' ||| ' (three pipe characters).\n"
+    "- IMPORTANT: never use a bare | character — always use ||| to separate steps, since | alone breaks math expressions.\n"
     "- Simple problems may need only 2-3 steps; complex derivations may need 5-6.\n"
     "- Each step should be a clear, complete instruction or calculation.\n"
     "- Use ONLY content from the lecture.\n"
@@ -215,6 +224,25 @@ def _build_system(base: str, extra_key: str) -> str:
     return base
 
 
+def _shuffle_mcq_options(questions: list) -> list:
+    """Randomly shuffle MCQ answer options so the correct answer isn't always A or B."""
+    result = []
+    for q in questions:
+        if not isinstance(q, dict) or q.get("type", "mcq") != "mcq":
+            result.append(q)
+            continue
+        options = q.get("options", [])
+        correct_idx = q.get("correct_index", 0)
+        if not options or not isinstance(correct_idx, int) or correct_idx >= len(options):
+            result.append(q)
+            continue
+        correct_answer = options[correct_idx]
+        shuffled = list(options)
+        random.shuffle(shuffled)
+        result.append({**q, "options": shuffled, "correct_index": shuffled.index(correct_answer)})
+    return result
+
+
 def _gen_quiz(text: str) -> list:
     """Generate MCQ quiz questions as a list of dicts."""
     try:
@@ -224,7 +252,7 @@ def _gen_quiz(text: str) -> list:
             temperature=0.15,
             max_tokens=2800,
         )
-        return _parse_list(raw)
+        return _shuffle_mcq_options(_parse_list(raw))
     except Exception as e:
         logger.error(f"_gen_quiz failed: {e}", exc_info=True)
         return []
@@ -437,11 +465,12 @@ def generate_similar_problems(reference_problems: list, context: str) -> list:
         "Each new problem must test the same concept but use different values, scenarios, or angles.\n"
         "Use this EXACT format for each — no deviations:\n\n"
         "1. PROBLEM: [problem statement — use LaTeX math where appropriate, e.g. $f(x) = x^2$]\n"
-        "   SOLUTION: [step 1] | [step 2] | [step 3] | [step 4]\n\n"
+        "   SOLUTION: [step 1] ||| [step 2] ||| [step 3] ||| [step 4]\n\n"
         "Rules:\n"
         "- Match the difficulty level of the example problems.\n"
         "- Use LaTeX for all math expressions (wrap in $...$).\n"
-        "- Use as many steps as the problem genuinely requires (2-6). Steps separated by ' | '.\n"
+        "- Use as many steps as the problem genuinely requires (2-6). Steps separated by ' ||| ' (three pipes).\n"
+        "- IMPORTANT: never use a bare | character — always use ||| to separate steps.\n"
         "- Use ONLY content from the lecture context.\n"
         "- Do NOT copy the example problems — create genuinely different ones.\n"
         "- Write all problems before stopping."

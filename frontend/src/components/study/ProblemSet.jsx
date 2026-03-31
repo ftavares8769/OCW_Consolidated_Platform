@@ -3,13 +3,32 @@ import { ChevronDown, ChevronUp, BookOpen, CheckSquare, Square } from 'lucide-re
 import LatexText from '../LatexText.jsx'
 import './Study.css'
 
+// Split a solution string into steps.
+// Prefers ||| separator (new format, never conflicts with math).
+// Falls back to | but skips pipes that appear inside $...$ blocks,
+// so legacy problems with absolute-value math don't get torn apart.
+function splitSteps(solution) {
+  if (!solution || typeof solution !== 'string') return []
+  if (solution.includes('|||')) {
+    return solution.split('|||').map(s => s.trim()).filter(Boolean)
+  }
+  // Legacy | format — skip pipes inside math
+  const parts = []
+  let current = ''
+  let inMath  = false
+  for (const ch of solution) {
+    if (ch === '$') { inMath = !inMath; current += ch }
+    else if (ch === '|' && !inMath) { if (current.trim()) parts.push(current.trim()); current = '' }
+    else { current += ch }
+  }
+  if (current.trim()) parts.push(current.trim())
+  return parts.filter(Boolean)
+}
+
 function Problem({ problem, index, selectMode, selected, onToggleSelect }) {
   const [showSolution, setShowSolution] = useState(false)
 
-  // Solutions stored as "Step 1 | Step 2 | Step 3" — split and render each
-  const steps = typeof problem.solution === 'string'
-    ? problem.solution.split('|').map(s => s.trim()).filter(Boolean)
-    : []
+  const steps = splitSteps(problem.solution)
 
   return (
     <div

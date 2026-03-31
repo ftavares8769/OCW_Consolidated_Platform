@@ -479,7 +479,41 @@ def generate_flashcards(lecture_id: int, db: Session = Depends(get_db)):
     return {"cards_created": n, "message": f"{n} flashcards added to your deck."}
 
 
-# ── Delete (for Regenerate) ───────────────────────────────────────────────────
+# ── Edit / Delete individual card ────────────────────────────────────────────
+
+class CardUpdateRequest(BaseModel):
+    front: Optional[str] = None
+    back:  Optional[str] = None
+    tags:  Optional[list[str]] = None
+
+
+@router.patch("/api/flashcards/{card_id}")
+def update_flashcard(card_id: int, req: CardUpdateRequest, db: Session = Depends(get_db)):
+    card = db.query(Flashcard).filter(Flashcard.id == card_id).first()
+    if not card:
+        raise HTTPException(status_code=404, detail="Card not found")
+    if req.front is not None:
+        card.front = req.front.strip()
+    if req.back is not None:
+        card.back = req.back.strip()
+    if req.tags is not None:
+        card.tags = req.tags
+    db.commit()
+    db.refresh(card)
+    return serialize_card(card)
+
+
+@router.delete("/api/flashcards/{card_id}")
+def delete_single_flashcard(card_id: int, db: Session = Depends(get_db)):
+    card = db.query(Flashcard).filter(Flashcard.id == card_id).first()
+    if not card:
+        raise HTTPException(status_code=404, detail="Card not found")
+    db.delete(card)
+    db.commit()
+    return {"deleted": card_id}
+
+
+# ── Delete all cards for a lecture (Regenerate) ───────────────────────────────
 
 @router.delete("/api/flashcards/lecture/{lecture_id}")
 def delete_lecture_flashcards(lecture_id: int, db: Session = Depends(get_db)):

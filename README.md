@@ -12,9 +12,10 @@ A self-hosted AI learning platform that turns MIT OpenCourseWare lectures into a
 |---|---|
 | **Library** | Import any MIT OCW course by URL or YouTube playlist |
 | **AI Notes** | Auto-generated summaries and key-term definitions from lecture transcripts |
-| **Quiz & Problems** | AI-generated MCQs and step-by-step practice problems with LaTeX math |
-| **Flashcards** | Spaced-repetition deck (SM-2 algorithm) — study by lecture or across all decks |
-| **Review tab** | Tracks every wrong quiz answer; groups by concept; generates targeted explanations and practice |
+| **Quiz** | Mixed question types: multiple-choice, fill-in-the-blank, and open-ended (LLM-graded) |
+| **Practice Problems** | Step-by-step problems with full solutions and LaTeX math rendering |
+| **Flashcards** | Spaced-repetition deck (SM-2) — flip mode or type-answer mode; edit and delete individual cards |
+| **Review tab** | Tracks every wrong answer (all question types); groups by concept; AI explanations and targeted practice |
 | **AI Tutor** | Streaming chat tutor with full lecture transcript as context |
 | **Resource scraper** | Finds and auto-downloads PDFs, slides, exams, and problem sets from OCW |
 | **Discover** | Search the full MIT OCW catalogue (2 000+ courses) and import in one click |

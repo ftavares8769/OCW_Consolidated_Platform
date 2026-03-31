@@ -103,6 +103,7 @@ from routes.tutor import router as tutor_router
 from routes.flashcards import router as flashcards_router
 from routes.settings import router as settings_router
 from routes.mistakes import router as mistakes_router
+from routes.quiz import router as quiz_router
 
 app.include_router(courses_router)
 app.include_router(lectures_router)
@@ -110,6 +111,7 @@ app.include_router(tutor_router)
 app.include_router(flashcards_router)
 app.include_router(settings_router)
 app.include_router(mistakes_router)
+app.include_router(quiz_router)
 
 
 @app.get("/api/health")

@@ -1,11 +1,17 @@
 /**
- * LatexText — renders text that may contain LaTeX math ($...$ inline, $$...$$ display).
- * Uses katex directly (no react-markdown) so it works in any context including
- * <button> and <span> elements, and is compatible with React 18.
+ * LatexText — renders text that may contain LaTeX math.
+ * Supported delimiters:
+ *   $$...$$    display math
+ *   \[...\]    display math  (common model output)
+ *   $...$      inline math
+ *   \(...\)    inline math   (common model output)
+ *
+ * Uses KaTeX directly — compatible with any React element including
+ * <button>, <span>, etc.
  *
  * Props:
  *   children  — the text to render (string)
- *   block     — if true renders as a <div>, otherwise <span>; default false
+ *   block     — if true renders as <div>, otherwise <span>; default false
  *   className — optional CSS class on the wrapper element
  */
 import katex from 'katex'
@@ -19,11 +25,15 @@ function renderMath(tex, displayMode) {
   }
 }
 
-// Split text into alternating text / math segments
+// Split text into alternating text / math segments.
+// Ordered so display variants are matched before inline variants.
+//   Group 1: $$...$$   display
+//   Group 2: \[...\]   display
+//   Group 3: \(...\)   inline
+//   Group 4: $...$     inline  (newlines forbidden to avoid false positives)
 function parseLatex(str) {
   const parts = []
-  // Match $$...$$ (display) before $...$ (inline) to avoid ambiguity
-  const regex = /\$\$([\s\S]+?)\$\$|\$([^$\n]+?)\$/g
+  const regex = /\$\$([\s\S]+?)\$\$|\\\[([\s\S]+?)\\\]|\\\((.+?)\\\)|\$([^$\n]+?)\$/g
   let last = 0
   let m
   while ((m = regex.exec(str)) !== null) {
@@ -31,9 +41,13 @@ function parseLatex(str) {
       parts.push({ type: 'text', value: str.slice(last, m.index) })
     }
     if (m[1] !== undefined) {
-      parts.push({ type: 'display', value: m[1] })
+      parts.push({ type: 'display', value: m[1] })   // $$...$$
+    } else if (m[2] !== undefined) {
+      parts.push({ type: 'display', value: m[2] })   // \[...\]
+    } else if (m[3] !== undefined) {
+      parts.push({ type: 'inline', value: m[3] })    // \(...\)
     } else {
-      parts.push({ type: 'inline', value: m[2] })
+      parts.push({ type: 'inline', value: m[4] })    // $...$
     }
     last = m.index + m[0].length
   }
