@@ -20,12 +20,10 @@ function effectiveModelLabel(s) {
 
 // ── Context window presets ────────────────────────────────────────────────────
 const CONTEXT_PRESETS = [
-  { tokens: 512,   label: 'Very fast',   hint: 'Minimal output, best for tiny models' },
-  { tokens: 1024,  label: 'Fast',        hint: 'Short responses' },
-  { tokens: 2048,  label: 'Balanced',    hint: 'Good for 1B–3B models', recommended: true },
-  { tokens: 4096,  label: 'Standard',    hint: 'Default — works for most models', recommended: true },
-  { tokens: 8192,  label: 'Extended',    hint: 'For 7B+ models' },
-  { tokens: 16384, label: 'Long context', hint: 'Large models / cloud APIs' },
+  { tokens: 4096,  label: 'Minimal',  hint: 'Small models / fast responses' },
+  { tokens: 8192,  label: 'Standard', hint: 'Recommended — best for 9B+ models', recommended: true },
+  { tokens: 16384, label: 'Extended', hint: 'Large models / long lectures' },
+  { tokens: 32768, label: 'Max',      hint: 'Cloud APIs / very large models' },
 ]
 
 // ── Cloud model options ───────────────────────────────────────────────────────
@@ -329,6 +327,11 @@ export default function SettingsPage() {
                   </>
                 )}
               </Field>
+
+              <div className="settings-model-rec">
+                ★ We recommend <strong>qwen3.5:9b</strong> or any 9B+ equivalent for best performance.
+                Smaller models may produce incomplete or lower-quality study materials.
+              </div>
 
               <Field
                 label="Context Window (tokens)"
