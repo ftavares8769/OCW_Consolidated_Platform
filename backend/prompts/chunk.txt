@@ -1,0 +1,7 @@
+/no_think
+Summarise the key points from this lecture segment as bullet points.
+Rules:
+- Write one bullet per key idea, starting each line with '- '.
+- Include definitions, formulas, and worked examples actually stated.
+- Be specific: use the actual terms and values from the text.
+- No introduction, no conclusion, no filler, no repetition.

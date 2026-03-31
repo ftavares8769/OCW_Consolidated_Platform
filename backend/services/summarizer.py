@@ -1,5 +1,6 @@
 import json
 import logging
+import os
 import random
 import re
 from services.transcript import chunk_transcript
@@ -12,88 +13,24 @@ logger = logging.getLogger(__name__)
 CHUNK_SIZE    = 1500
 CHUNK_OVERLAP = 150
 
-# /no_think suppresses Qwen3 chain-of-thought (ignored by cloud providers)
-CHUNK_SYSTEM_PROMPT = (
-    "/no_think\n"
-    "Summarise the key points from this lecture segment as bullet points.\n"
-    "Rules:\n"
-    "- Write one bullet per key idea, starting each line with '- '.\n"
-    "- Include definitions, formulas, and worked examples actually stated.\n"
-    "- Be specific: use the actual terms and values from the text.\n"
-    "- No introduction, no conclusion, no filler, no repetition."
-)
+# ── Prompt loader ──────────────────────────────────────────────────────────────
+# Prompts live in backend/prompts/*.txt — edit them freely without touching code.
+# /no_think on line 1 suppresses Qwen3 chain-of-thought; cloud providers ignore it.
 
-# ── Per-section system prompts (one focused call per section) ─────────────────
+_PROMPTS_DIR = os.path.join(os.path.dirname(os.path.dirname(__file__)), "prompts")
 
-_SUMMARY_SYSTEM = (
-    "/no_think\n"
-    "Summarize this lecture for a student in 2-3 sentences.\n"
-    "Sentence 1: what topic the lecture covers.\n"
-    "Sentence 2: the single most important concept or finding.\n"
-    "Sentence 3 (optional): one concrete method or example introduced.\n"
-    "Use ONLY content from the lecture. Write the summary text directly — no preamble, no labels."
-)
 
-_QUIZ_SYSTEM = (
-    "/no_think\n"
-    "Create exactly 5 quiz questions from this lecture using a mix of types: "
-    "3 multiple-choice, 1 fill-in-the-blank, and 1 open-ended.\n"
-    "Output a JSON array ONLY. Each element must include a 'type' field.\n\n"
-    "Multiple-choice (type='mcq'):\n"
-    '{"type":"mcq","question":"...","options":["A","B","C","D"],"correct_index":0}\n\n'
-    "Fill-in-the-blank (type='fill_blank'):\n"
-    '{"type":"fill_blank","question":"The ___ rule states that $\\\\frac{d}{dx}[f(g(x))] = ...$","blank_answer":"chain","hint":"think about composite functions"}\n\n'
-    "Open-ended (type='open_ended'):\n"
-    '{"type":"open_ended","question":"Explain why...","sample_answer":"Key points: A. B. C."}\n\n'
-    "Rules:\n"
-    "- Questions must be concise: 1-2 sentences maximum. Do NOT write long multi-sentence scenarios.\n"
-    "- Use LaTeX math notation where appropriate (e.g. $f\'(x)$, $\\\\int$).\n"
-    "- MCQ: 4 answer choices, correct_index is 0-3; wrong options must be plausible.\n"
-    "- Fill-blank: use exactly ___ (three underscores) as the blank marker; blank_answer is the missing word or short phrase; hint is optional.\n"
-    "- Open-ended: choose a conceptual or explanatory question; sample_answer lists 2-3 key points a student should cover.\n"
-    "- Cover 5 distinct, important testable concepts from the lecture.\n"
-    "- Use ONLY content from the lecture.\n"
-    "- Do NOT write questions about the professor, institution, or the video itself.\n"
-    "- You MUST output all 5 questions. Do not stop early.\n"
-    "Output compact JSON array (no extra spaces or newlines). No explanation, no markdown fences."
-)
+def _load_prompt(filename: str) -> str:
+    path = os.path.join(_PROMPTS_DIR, filename)
+    with open(path, "r", encoding="utf-8") as f:
+        return f.read()
 
-_PROBLEMS_SYSTEM = (
-    "/no_think\n"
-    "Write exactly 4 numbered practice problems from this lecture. One problem per major concept.\n"
-    "Use this EXACT format for each — no deviations:\n\n"
-    "1. PROBLEM: [problem statement — use LaTeX math notation where appropriate, e.g. $f(x) = x^2$]\n"
-    "   SOLUTION: [step 1] ||| [step 2] ||| [step 3]\n"
-    "2. PROBLEM: ...\n"
-    "   SOLUTION: ...\n"
-    "3. PROBLEM: ...\n"
-    "   SOLUTION: ...\n"
-    "4. PROBLEM: ...\n"
-    "   SOLUTION: ...\n\n"
-    "Rules:\n"
-    "- Problem statements should be concise: typically 2-3 sentences. A problem may exceed this only when the scenario genuinely requires it — not to add padding.\n"
-    "- One distinct concept per problem.\n"
-    "- Use LaTeX for all math expressions (wrap in $...$).\n"
-    "- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' ||| ' (three pipe characters).\n"
-    "- IMPORTANT: never use a bare | character — always use ||| to separate steps, since | alone breaks math expressions.\n"
-    "- Simple problems may need only 2-3 steps; complex derivations may need 5-6.\n"
-    "- Each step should be a clear, complete instruction or calculation.\n"
-    "- Use ONLY content from the lecture.\n"
-    "- You MUST write all 4 problems. Do not stop after 1 or 2."
-)
 
-_NOTES_SYSTEM = (
-    "/no_think\n"
-    "Extract key terms and definitions from this lecture.\n"
-    "Output a JSON array of strings ONLY.\n"
-    'Each string format: "Term \u2014 definition" (keep definitions concise, 12 words or fewer)\n'
-    "Rules:\n"
-    "- Max 10 entries, most important first.\n"
-    "- Extract ONLY core technical concepts a student needs for an exam.\n"
-    "- Do NOT include names of people, institutions, or meta-talk about the video.\n"
-    "- Use ONLY content from the lecture.\n"
-    "Output valid JSON array only. No explanation, no markdown fences."
-)
+CHUNK_SYSTEM_PROMPT = _load_prompt("chunk.txt")
+_SUMMARY_SYSTEM     = _load_prompt("summary.txt")
+_QUIZ_SYSTEM        = _load_prompt("quiz.txt")
+_PROBLEMS_SYSTEM    = _load_prompt("problems.txt")
+_NOTES_SYSTEM       = _load_prompt("notes.txt")
 
 
 # ── Helpers ───────────────────────────────────────────────────────────────────

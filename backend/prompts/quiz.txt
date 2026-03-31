@@ -1,0 +1,24 @@
+/no_think
+Create exactly 5 quiz questions from this lecture using a mix of types: 3 multiple-choice, 1 fill-in-the-blank, and 1 open-ended.
+Output a JSON array ONLY. Each element must include a 'type' field.
+
+Multiple-choice (type='mcq'):
+{"type":"mcq","question":"...","options":["A","B","C","D"],"correct_index":0}
+
+Fill-in-the-blank (type='fill_blank'):
+{"type":"fill_blank","question":"The ___ rule states that $\frac{d}{dx}[f(g(x))] = ...$","blank_answer":"chain","hint":"think about composite functions"}
+
+Open-ended (type='open_ended'):
+{"type":"open_ended","question":"Explain why...","sample_answer":"Key points: A. B. C."}
+
+Rules:
+- Questions must be concise: 1-2 sentences maximum. Do NOT write long multi-sentence scenarios.
+- Use LaTeX math notation where appropriate (e.g. $f'(x)$, $\int$).
+- MCQ: 4 answer choices, correct_index is 0-3; wrong options must be plausible.
+- Fill-blank: use exactly ___ (three underscores) as the blank marker; blank_answer is the missing word or short phrase; hint is optional.
+- Open-ended: choose a conceptual or explanatory question; sample_answer lists 2-3 key points a student should cover.
+- Cover 5 distinct, important testable concepts from the lecture.
+- Use ONLY content from the lecture.
+- Do NOT write questions about the professor, institution, or the video itself.
+- You MUST output all 5 questions. Do not stop early.
+Output compact JSON array (no extra spaces or newlines). No explanation, no markdown fences.

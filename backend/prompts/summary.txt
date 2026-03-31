@@ -1,0 +1,6 @@
+/no_think
+Summarize this lecture for a student in 2-3 sentences.
+Sentence 1: what topic the lecture covers.
+Sentence 2: the single most important concept or finding.
+Sentence 3 (optional): one concrete method or example introduced.
+Use ONLY content from the lecture. Write the summary text directly — no preamble, no labels.

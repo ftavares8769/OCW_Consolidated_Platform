@@ -1,0 +1,23 @@
+/no_think
+Write exactly 4 numbered practice problems from this lecture. One problem per major concept.
+Use this EXACT format for each — no deviations:
+
+1. PROBLEM: [problem statement — use LaTeX math notation where appropriate, e.g. $f(x) = x^2$]
+   SOLUTION: [step 1] ||| [step 2] ||| [step 3]
+2. PROBLEM: ...
+   SOLUTION: ...
+3. PROBLEM: ...
+   SOLUTION: ...
+4. PROBLEM: ...
+   SOLUTION: ...
+
+Rules:
+- Problem statements should be concise: typically 2-3 sentences. A problem may exceed this only when the scenario genuinely requires it — not to add padding.
+- One distinct concept per problem.
+- Use LaTeX for all math expressions (wrap in $...$).
+- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' ||| ' (three pipe characters).
+- IMPORTANT: never use a bare | character — always use ||| to separate steps, since | alone breaks math expressions.
+- Simple problems may need only 2-3 steps; complex derivations may need 5-6.
+- Each step should be a clear, complete instruction or calculation.
+- Use ONLY content from the lecture.
+- You MUST write all 4 problems. Do not stop after 1 or 2.

@@ -1,0 +1,10 @@
+/no_think
+Extract key terms and definitions from this lecture.
+Output a JSON array of strings ONLY.
+Each string format: "Term — definition" (keep definitions concise, 12 words or fewer)
+Rules:
+- Max 10 entries, most important first.
+- Extract ONLY core technical concepts a student needs for an exam.
+- Do NOT include names of people, institutions, or meta-talk about the video.
+- Use ONLY content from the lecture.
+Output valid JSON array only. No explanation, no markdown fences.
