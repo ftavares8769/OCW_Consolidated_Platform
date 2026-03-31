@@ -45,13 +45,15 @@ cd learnOCW
 
 ### 2 — (Optional) Pull a local model with Ollama
 
+> **Minimum requirement:** models below 8B parameters consistently fail to produce valid structured JSON and are **not supported**. `qwen3:8b` is the minimum viable model; `qwen3.5:9b` or larger is recommended.
+
 ```bash
 # Install Ollama from https://ollama.com, then:
-ollama pull qwen3:1.7b        # fast, low VRAM — good default
+ollama pull qwen3.5:9b        # recommended default (~6 GB VRAM)
 # or
-ollama pull llama3.2:3b       # good alternative
+ollama pull qwen3:8b          # minimum viable model (~5 GB VRAM)
 # or
-ollama pull mistral:7b        # higher quality, needs ~8 GB VRAM
+ollama pull mistral:7b        # alternative — borderline, results may vary
 ```
 
 ### 3 — Start everything
@@ -99,12 +101,15 @@ You can use one provider for content generation and a different one for the AI T
 
 ### Recommended Ollama models
 
+> ⚠️ **Models below 8B parameters are not supported.** They cannot reliably produce the structured JSON required for quizzes, problems, and key terms. `qwen3:8b` is the bare minimum; expect occasional formatting errors even at 8B.
+
 | Model | VRAM | Quality | Notes |
 |---|---|---|---|
-| `qwen3:1.7b` | ~2 GB | Good | Default — fastest, runs on most hardware |
-| `qwen3:8b` | ~6 GB | Better | Recommended if you have a mid-range GPU |
-| `llama3.2:3b` | ~2 GB | Good | Alternative to qwen3 |
-| `mistral:7b` | ~8 GB | Great | Best quality for math-heavy content |
+| `qwen3.5:9b` | ~6 GB | ⭐ Best | **Recommended default** — strong JSON reliability, fast |
+| `qwen3:8b` | ~5 GB | Good | Minimum viable — occasional JSON errors possible |
+| `mistral:7b` | ~5 GB | Fair | Borderline — results may vary; upgrade if output breaks |
+| `llama3.1:8b` | ~6 GB | Good | Solid alternative at the 8B tier |
+| Cloud (OpenAI / Anthropic) | — | Excellent | No VRAM needed — enter API key in Settings |
 
 ---
 
@@ -232,4 +237,4 @@ Pull requests are welcome. A few conventions:
 
 ## License
 
-MIT — see [LICENSE](LICENSE) for details.
+GPL v3 — see [LICENSE](LICENSE) for details.
