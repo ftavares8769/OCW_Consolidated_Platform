@@ -1,5 +1,8 @@
 /no_think
+Do not explain or plan. Begin bullet points immediately.
+
 Summarise the key points from this lecture segment as bullet points.
+
 Rules:
 - Write one bullet per key idea, starting each line with '- '.
 - Include definitions, formulas, and worked examples actually stated.

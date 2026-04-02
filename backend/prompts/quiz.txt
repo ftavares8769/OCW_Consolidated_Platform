@@ -1,24 +1,35 @@
 /no_think
-Create exactly 5 quiz questions from this lecture using a mix of types: 3 multiple-choice, 1 fill-in-the-blank, and 1 open-ended.
-Output a JSON array ONLY. Each element must include a 'type' field.
+Create exactly 5 quiz questions from the provided lecture transcript. The questions must be a mix of types: 3 multiple-choice, 1 fill-in-the-blank, and 1 open-ended.
+
+<OUTPUT_FORMAT>
+Output a JSON array ONLY. Each element must include a 'type' field. Adhere strictly to the following JSON schemas:
 
 Multiple-choice (type='mcq'):
+```json
 {"type":"mcq","question":"...","options":["A","B","C","D"],"correct_index":0}
+```
 
 Fill-in-the-blank (type='fill_blank'):
-{"type":"fill_blank","question":"The ___ rule states that $\frac{d}{dx}[f(g(x))] = ...$","blank_answer":"chain","hint":"think about composite functions"}
+```json
+{"type":"fill_blank","question":"The ___ rule states that $\\frac{d}{dx}[f(g(x))] = ...$","blank_answer":"chain","hint":"think about composite functions"}
+```
 
 Open-ended (type='open_ended'):
+```json
 {"type":"open_ended","question":"Explain why...","sample_answer":"Key points: A. B. C."}
+```
+</OUTPUT_FORMAT>
 
-Rules:
-- Questions must be concise: 1-2 sentences maximum. Do NOT write long multi-sentence scenarios.
-- Use LaTeX math notation where appropriate (e.g. $f'(x)$, $\int$).
-- MCQ: 4 answer choices, correct_index is 0-3; wrong options must be plausible.
-- Fill-blank: use exactly ___ (three underscores) as the blank marker; blank_answer is the missing word or short phrase; hint is optional.
-- Open-ended: choose a conceptual or explanatory question; sample_answer lists 2-3 key points a student should cover.
+RULES:
+- Questions must be concise: 1-2 sentences maximum.
+- Use LaTeX math notation where appropriate (e.g., $f'(x)$, $\int$). When including LaTeX within JSON string values, **double-escape all backslashes** (e.g., `\\frac{d}{dx}`).
+- MCQ: Provide exactly 4 answer choices. The `correct_index` must be 0, 1, 2, or 3. Wrong options must be plausible distractors.
+- Fill-in-the-blank: Use exactly `___` (three underscores) as the blank marker. The `blank_answer` should be a single word or short phrase. The `hint` should be concise and helpful.
+- Open-ended: The `sample_answer` must list 2-3 key points a student should cover.
 - Cover 5 distinct, important testable concepts from the lecture.
-- Use ONLY content from the lecture.
-- Do NOT write questions about the professor, institution, or the video itself.
-- You MUST output all 5 questions. Do not stop early.
-Output compact JSON array (no extra spaces or newlines). No explanation, no markdown fences.
+- Use ONLY content from the lecture. DO NOT use examples or concepts from this prompt's examples (e.g., the 'chain rule' example).
+- DO NOT write questions about the professor, institution, or the video itself.
+- You MUST output all 5 questions.
+- Output compact JSON array (no extra spaces or newlines). No explanation, no markdown fences, no preamble, no labels.
+- Ensure all backslashes in LaTeX math within JSON string values are double-escaped (e.g., `\\frac{d}{dx}`).
+- DO NOT output any internal thoughts or planning.

@@ -1,6 +1,16 @@
 /no_think
-Summarize this lecture for a student in 2-3 sentences.
-Sentence 1: what topic the lecture covers.
-Sentence 2: the single most important concept or finding.
-Sentence 3 (optional): one concrete method or example introduced.
-Use ONLY content from the lecture. Write the summary text directly — no preamble, no labels.
+Your task is to summarize a lecture for a student. The summary must be exactly 2-3 sentences long.
+
+<OUTPUT_FORMAT>
+Sentence 1: State the main topic of the lecture.
+Sentence 2: Explain the single most important concept or finding from the lecture.
+Sentence 3 (optional): Provide one concrete method or example introduced in the lecture.
+</OUTPUT_FORMAT>
+
+RULES:
+- Use ONLY content from the provided lecture transcript.
+- Adhere strictly to the <OUTPUT_FORMAT> structure.
+- DO NOT include any preamble, labels (e.g., "Sentence 1:"), or conversational filler.
+- DO NOT output any markdown fences (e.g., ```json).
+- DO NOT output any internal thoughts or planning.
+- The summary must be a continuous block of text, exactly 2 or 3 sentences long.

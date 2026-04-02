@@ -1,9 +1,19 @@
 /no_think
-Write exactly 4 numbered practice problems from this lecture. One problem per major concept.
-Use this EXACT format for each — no deviations:
 
-1. PROBLEM: [problem statement — use LaTeX math notation where appropriate, e.g. $f(x) = x^2$]
-   SOLUTION: [step 1] ||| [step 2] ||| [step 3]
+You are generating high-quality practice problems based strictly on a lecture transcript.
+
+Your goal is to test understanding of the MOST IMPORTANT and DISTINCT concepts from the lecture.
+
+TASK:
+- Write EXACTLY 4 numbered practice problems.
+- Each problem must target a DIFFERENT major concept from the lecture.
+- Prioritize core ideas, not minor details.
+
+<OUTPUT_FORMAT>
+
+Full output must look like:
+1. PROBLEM: [concise problem statement — 2–3 sentences max; use LaTeX for all math, e.g., $f(x) = x^2$]
+   SOLUTION: [unit 1] ||| [unit 2] ||| [unit 3]
 2. PROBLEM: ...
    SOLUTION: ...
 3. PROBLEM: ...
@@ -11,13 +21,50 @@ Use this EXACT format for each — no deviations:
 4. PROBLEM: ...
    SOLUTION: ...
 
-Rules:
-- Problem statements should be concise: typically 2-3 sentences. A problem may exceed this only when the scenario genuinely requires it — not to add padding.
-- One distinct concept per problem.
-- Use LaTeX for all math expressions (wrap in $...$).
-- Use as many steps as the problem genuinely requires (between 2 and 6). Steps separated by ' ||| ' (three pipe characters).
-- IMPORTANT: never use a bare | character — always use ||| to separate steps, since | alone breaks math expressions.
-- Simple problems may need only 2-3 steps; complex derivations may need 5-6.
-- Each step should be a clear, complete instruction or calculation.
-- Use ONLY content from the lecture.
-- You MUST write all 4 problems. Do not stop after 1 or 2.
+</OUTPUT_FORMAT>
+
+RULES:
+
+CONTENT & COVERAGE:
+- Each problem MUST assess a different major concept from the lecture.
+- Problems should reflect realistic exam-style questions.
+- Use ONLY information present in the lecture (no external knowledge or assumptions).
+- Avoid trivial recall; favor application, reasoning, or calculation.
+
+CLARITY & QUALITY:
+- Problem statements must be clear, precise, and unambiguous.
+- Avoid unnecessary wording; keep within 2–3 sentences unless absolutely required.
+- Use consistent notation throughout.
+
+SOLUTIONS:
+- Write solutions as a direct answer key: state what to do and what the result is.
+- Do NOT re-explain background that is already in the problem statement.
+- Do NOT summarise the lecture or add commentary.
+- Use ||| to separate segments. When to split:
+  - 1 segment: simple answer or short derivation that fits in 1–2 sentences.
+  - 2–4 segments: multi-step derivation, or a conceptual answer with a clear Setup → Reasoning → Conclusion structure.
+  - Split only at genuine logical boundaries — never split a single idea into two.
+- Each segment: 1–3 sentences or one clear calculation line maximum.
+- Each segment must add distinct value; no repetition or padding.
+- Mathematical solutions must show all necessary work.
+
+FORMATTING:
+- Use LaTeX for ALL mathematical expressions (wrap in $...$).
+- Separate solution units using EXACTLY: ` ||| `
+- NEVER use a single `|` character.
+- Do NOT include extra spaces, symbols, or formatting deviations.
+
+STRICT OUTPUT CONSTRAINTS:
+- DO NOT include any preamble, explanation, or commentary.
+- DO NOT include labels like "Problem 1:" (use exactly "1. PROBLEM:").
+- DO NOT output markdown fences.
+- DO NOT include internal reasoning or planning.
+
+FAIL CONDITIONS (must be avoided):
+- Fewer or more than 4 problems
+- Repeated concepts
+- Missing LaTeX formatting
+- Incorrect separator usage (`|||`)
+- Vague or trivial problems
+- Any segment longer than 3 sentences
+- Solution re-explains background already given in the problem statement

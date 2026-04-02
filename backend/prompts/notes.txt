@@ -1,10 +1,21 @@
 /no_think
-Extract key terms and definitions from this lecture.
-Output a JSON array of strings ONLY.
-Each string format: "Term — definition" (keep definitions concise, 12 words or fewer)
-Rules:
-- Max 10 entries, most important first.
+Extract key terms and definitions from the provided lecture transcript. Output a JSON array of strings ONLY.
+
+<OUTPUT_FORMAT>
+Each string MUST use this exact separator format: "Term — definition"
+The separator is an em dash ( — ) with a space on each side. Do NOT use a colon (:).
+Example: "Orthogonal projection — linear map sending a vector to its nearest point in a subspace"
+Keep definitions concise: 10 words or fewer.
+</OUTPUT_FORMAT>
+
+RULES:
+- Max 10 entries. Prioritize the most important terms first.
 - Extract ONLY core technical concepts a student needs for an exam.
-- Do NOT include names of people, institutions, or meta-talk about the video.
+- DO NOT include names of people, institutions, or meta-talk about the video.
 - Use ONLY content from the lecture.
-Output valid JSON array only. No explanation, no markdown fences.
+- Definitions must be 10 words or fewer — cut ruthlessly.
+- Output valid JSON array only. No explanation, no markdown fences, no preamble, no labels.
+- Ensure all backslashes in LaTeX math (if any) within JSON string values are double-escaped (e.g., `\\frac{d}{dx}`).
+- DO NOT output any internal thoughts or planning.
+
+CRITICAL: Your response must begin with [ and end with ]. No text before or after the array.

@@ -102,6 +102,132 @@
   line-height: 1.4;
 }
 
+.lab-fn-file {
+  color: var(--accent);
+  font-family: monospace;
+  font-size: 10px;
+}
+
+.lab-fn-chunk-note {
+  margin-top: 5px;
+  font-size: 10px;
+  color: var(--text-muted);
+  opacity: 0.7;
+  line-height: 1.4;
+}
+
+.lab-fn-chunk-note code {
+  font-family: monospace;
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* ── Lecture picker ──────────────────────────────────────────────────────────── */
+
+.lab-from-lecture-btn {
+  font-size: 10px;
+  font-weight: 500;
+  color: var(--accent);
+  background: transparent;
+  border: 1px solid var(--accent);
+  border-radius: 4px;
+  padding: 2px 7px;
+  cursor: pointer;
+  transition: all 0.15s;
+  text-transform: none;
+  letter-spacing: 0;
+  margin-left: auto;
+}
+
+.lab-from-lecture-btn:hover {
+  background: var(--accent-dim);
+}
+
+.lab-lecture-picker {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.lab-picker-select {
+  width: 100%;
+  background: var(--bg-primary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 12px;
+  padding: 7px 10px;
+  cursor: pointer;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  font-family: inherit;
+}
+
+.lab-picker-select:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.lab-picker-select option {
+  background: var(--bg-secondary);
+}
+
+.lab-picker-load-btn {
+  padding: 7px 12px;
+  background: var(--accent);
+  border: none;
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  align-self: flex-end;
+}
+
+.lab-picker-load-btn:hover:not(:disabled) { opacity: 0.88; }
+
+.lab-picker-load-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.lab-loaded-badge {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 8px;
+  background: rgba(34, 197, 94, 0.1);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: #22c55e;
+  font-family: monospace;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.lab-loaded-clear {
+  background: transparent;
+  border: none;
+  color: #22c55e;
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 1;
+  padding: 0 2px;
+  margin-left: auto;
+  flex-shrink: 0;
+  opacity: 0.7;
+  transition: opacity 0.15s;
+}
+
+.lab-loaded-clear:hover { opacity: 1; }
+
 /* ── Textareas ───────────────────────────────────────────────────────────────── */
 
 .lab-textarea {
