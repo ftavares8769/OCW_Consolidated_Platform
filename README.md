@@ -21,6 +21,7 @@ A self-hosted AI learning platform that turns MIT OpenCourseWare lectures into a
 | **AI Tutor** | Streaming chat tutor with full lecture transcript as context |
 | **Resource scraper** | Finds and auto-downloads PDFs, slides, exams, and problem sets from OCW |
 | **Discover** | Search the full MIT OCW catalogue (2 000+ courses) and import in one click |
+| **Prompt Lab** | Side-by-side multi-model comparison tool — run any generation function against several models at once, inspect raw and parsed output, load any lecture transcript in one click, and export results as `.txt` or `.csv` |
 | **Multi-provider AI** | Works with Ollama (local, free), OpenAI, or Anthropic — switch any time in Settings |
 
 ---
@@ -133,11 +134,18 @@ learnOCW/
 │   │   ├── mistakes.py       # Wrong-answer tracking & review
 │   │   ├── quiz.py           # Open-ended answer grading
 │   │   ├── stats.py          # Dashboard stats, heatmap, goals
+│   │   ├── lab.py            # Prompt Lab: multi-model comparison runs
 │   │   └── settings.py       # AI provider config
+│   ├── prompts/
+│   │   ├── summary.txt       # Prompt: 2-3 sentence lecture summary
+│   │   ├── notes.txt         # Prompt: key terms → JSON array
+│   │   ├── quiz.txt          # Prompt: 5 mixed-type quiz questions → JSON
+│   │   ├── problems.txt      # Prompt: 4 practice problems with solutions
+│   │   └── chunk.txt         # Prompt: per-chunk bullet summary (long transcripts)
 │   └── services/
 │       ├── ai_client.py      # Ollama / OpenAI / Anthropic abstraction
 │       ├── config.py         # Settings persistence (incl. daily/weekly goals)
-│       ├── summarizer.py     # AI content generation (notes, quiz, problems)
+│       ├── summarizer.py     # AI content generation (loads prompts from prompts/)
 │       ├── scraper.py        # OCW resource scraper
 │       ├── downloader.py     # Auto-download course files
 │       ├── transcript.py     # YouTube transcript fetching & cleaning
@@ -147,11 +155,12 @@ learnOCW/
 │   └── src/
 │       ├── App.jsx           # Router & sidebar navigation
 │       ├── pages/
-│       │   ├── HomePage.jsx      # Dashboard: goals, heatmap, course completion
-│       │   ├── CoursesPage.jsx   # Library + Discover
-│       │   ├── LecturePage.jsx   # Video, notes, study, files
+│       │   ├── HomePage.jsx        # Dashboard: goals, heatmap, course completion
+│       │   ├── CoursesPage.jsx     # Library + Discover
+│       │   ├── LecturePage.jsx     # Video, notes, study, files
 │       │   ├── FlashcardsPage.jsx
-│       │   ├── ReviewPage.jsx    # Mistake review tab
+│       │   ├── ReviewPage.jsx      # Mistake review tab
+│       │   ├── PromptLabPage.jsx   # Multi-model prompt comparison tool
 │       │   └── SettingsPage.jsx
 │       └── components/
 │           ├── ActivityHeatmap.jsx  # GitHub-style 13-week review heatmap
@@ -233,6 +242,8 @@ Key endpoints:
 | `GET` | `/api/stats/overview` | Dashboard data: heatmap, streak, goals, course completion |
 | `GET` | `/api/stats/goals` | Current daily/weekly goals |
 | `PUT` | `/api/stats/goals` | Update daily/weekly goals |
+| `GET` | `/api/lab/models` | All available models (local + cloud) for Prompt Lab |
+| `POST` | `/api/lab/run` | Run a single model + function in Prompt Lab |
 
 ---
 
@@ -242,7 +253,7 @@ Pull requests are welcome. A few conventions:
 
 - **Backend**: Python 3.10+, FastAPI, SQLAlchemy 2.x, Pydantic v2. Avoid new runtime dependencies where possible.
 - **Frontend**: React 18, Vite, no CSS frameworks (custom dark-theme CSS). Keep components small.
-- **AI prompts**: all prompts live in `backend/services/summarizer.py`. Changes there have the biggest UX impact — test with both a small local model and a cloud model.
+- **AI prompts**: all prompts live in `backend/prompts/*.txt` and are loaded at runtime. Changes there have the biggest UX impact — use the **Prompt Lab** to test against multiple models side-by-side before committing.
 - **No secrets**: `backend/data/` is git-ignored. Never hardcode API keys or local file paths.
 
 ---
